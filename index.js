@@ -122,10 +122,16 @@ BCI.prototype._wakeUp = function (callback) {
   // only allowed to send WAKEUP after sending STANDBY
   this.chipSelect.output(false);
   this.spi.transfer(new Buffer([_WAKEUP]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     setTimeout(function () {
       this.chipSelect.output(true);
       if (callback) {
-        callback(rxbuf);
+        callback(null, rxbuf);
       }
     }, 3); //must wait 4 tCLK cycles before sending another command (Datasheet, pg. 35)
   });
@@ -134,9 +140,15 @@ BCI.prototype._wakeUp = function (callback) {
 BCI.prototype._standby = function (callback) {
   this.chipSelect.output(false);
   this.spi.transfer(new Buffer([_STANDBY]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     this.chipSelect.output(true);
     if (callback) {
-      callback(rxbuf);
+      callback(null, rxbuf);
     }
   });
 };
@@ -146,10 +158,16 @@ BCI.prototype._reset = function (callback) {
   var self = this;
   self.chipSelect.output(false);
   self.spi.transfer(new Buffer([_RESET]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     setTimeout(function () {
       self.chipSelect.output(true);
       if (callback) {
-        callback(rxbuf);
+        callback(null, rxbuf);
       }
     }, 12); //must wait 18 tCLK cycles to execute this command (Datasheet, pg. 35)
   });
@@ -159,9 +177,15 @@ BCI.prototype._reset = function (callback) {
 BCI.prototype._start = function (callback) {
   this.chipSelect.output(false);
   this.spi.transfer(new Buffer([_START]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     this.chipSelect.output(true);
     if (callback) {
-      callback(rxbuf);
+      callback(null, rxbuf);
     }
   });
 };
@@ -170,9 +194,15 @@ BCI.prototype._start = function (callback) {
 BCI.prototype._stop = function (callback) {
   this.chipSelect.output(false);
   this.spi.transfer(new Buffer([_STOP]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     this.chipSelect.output(true);
     if (callback) {
-      callback(rxbuf);
+      callback(null, rxbuf);
     }
   });
 };
@@ -182,10 +212,16 @@ BCI.prototype._rdatac = function (callback) {
   var self = this;
   self.chipSelect.output(false);
   self.spi.transfer(new Buffer([_RDATAC]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     setTimeout(function () {
       self.chipSelect.output(true);
       if (callback) {
-        callback(rxbuf);
+        callback(null, rxbuf);
       }
     }, 3);
   });
@@ -196,10 +232,16 @@ BCI.prototype._sdatac = function (callback) {
   var self = this;
   self.chipSelect.output(false);
   self.spi.transfer(new Buffer([_SDATAC]), function (err, rxbuf) {
+    if (err) {
+      if (callback) {
+        callback(err);
+      }
+      return err;
+    }
     setTimeout(function () {
       self.chipSelect.output(true);
       if (callback) {
-        callback(rxbuf);
+        callback(null, rxbuf);
       }
     }, 3); //must wait 4 tCLK cycles after executing this command (Datasheet, pg. 37)
   });
