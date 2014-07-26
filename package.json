@@ -4,7 +4,7 @@
   "description": "Tessel + OpenBCI",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tessel run apiTest.js"
   },
   "repository": {
     "type": "git",
