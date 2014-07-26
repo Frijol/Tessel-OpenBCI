@@ -118,10 +118,11 @@ function BCI(hardware, callback) {
 // // We want the ability to emit events
 // util.inherits(BCI, EventEmitter);
 
+// Wakes up chip from standby mode
 BCI.prototype._wakeUp = function (callback) {
-  // only allowed to send WAKEUP after sending STANDBY
-  this.chipSelect.output(false);
-  this.spi.transfer(new Buffer([_WAKEUP]), function (err, rxbuf) {
+  var self = this;
+  self.chipSelect.output(false);
+  self.spi.transfer(new Buffer([_WAKEUP]), function (err, rxbuf) {
     if (err) {
       if (callback) {
         callback(err);
@@ -129,7 +130,7 @@ BCI.prototype._wakeUp = function (callback) {
       return err;
     }
     setTimeout(function () {
-      this.chipSelect.output(true);
+      self.chipSelect.output(true);
       if (callback) {
         callback(null, rxbuf);
       }
@@ -137,16 +138,18 @@ BCI.prototype._wakeUp = function (callback) {
   });
 };
 
+// Sets chip in standby mode
 BCI.prototype._standby = function (callback) {
-  this.chipSelect.output(false);
-  this.spi.transfer(new Buffer([_STANDBY]), function (err, rxbuf) {
+  var self = this;
+  self.chipSelect.output(false);
+  self.spi.transfer(new Buffer([_STANDBY]), function (err, rxbuf) {
     if (err) {
       if (callback) {
         callback(err);
       }
       return err;
     }
-    this.chipSelect.output(true);
+    self.chipSelect.output(true);
     if (callback) {
       callback(null, rxbuf);
     }
@@ -193,15 +196,16 @@ BCI.prototype._start = function (callback) {
 
 // Stop data conversion
 BCI.prototype._stop = function (callback) {
-  this.chipSelect.output(false);
-  this.spi.transfer(new Buffer([_STOP]), function (err, rxbuf) {
+  var self = this;
+  self.chipSelect.output(false);
+  self.spi.transfer(new Buffer([_STOP]), function (err, rxbuf) {
     if (err) {
       if (callback) {
         callback(err);
       }
       return err;
     }
-    this.chipSelect.output(true);
+    self.chipSelect.output(true);
     if (callback) {
       callback(null, rxbuf);
     }
