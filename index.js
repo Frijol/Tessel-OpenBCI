@@ -175,15 +175,16 @@ BCI.prototype._reset = function (callback) {
 
 // Start data conversion
 BCI.prototype._start = function (callback) {
-  this.chipSelect.output(false);
-  this.spi.transfer(new Buffer([_START]), function (err, rxbuf) {
+  var self = this;
+  self.chipSelect.output(false);
+  self.spi.transfer(new Buffer([_START]), function (err, rxbuf) {
     if (err) {
       if (callback) {
         callback(err);
       }
       return err;
     }
-    this.chipSelect.output(true);
+    self.chipSelect.output(true);
     if (callback) {
       callback(null, rxbuf);
     }
